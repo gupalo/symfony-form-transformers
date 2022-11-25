@@ -1,0 +1,32 @@
+{
+    "name": "gupalo/symfony-form-transformers",
+    "description": "Symfony Form Transformers",
+    "keywords": ["tsv", "symfony", "form", "data-transformer"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Volodymyr Luchaninov",
+            "homepage": "https://luchaninov.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "symfony/form": "^6.1",
+        "symfony/yaml": "^6.1"
+    },
+    "require-dev": {
+        "phpspec/prophecy-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gupalo\\SymfonyFormTransformers\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Gupalo\\SymfonyFormTransformers\\Tests\\": "tests/"
+        }
+    }
+}
