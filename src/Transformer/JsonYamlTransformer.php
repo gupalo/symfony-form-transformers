@@ -15,7 +15,13 @@ class JsonYamlTransformer implements DataTransformerInterface
      */
     public function transform($value): string
     {
-        return Yaml::dump($value);
+        try {
+            $result = Yaml::dump($value);
+        } catch (\Throwable $e) {
+            throw new TransformationFailedException($e->getMessage(), previous: $e, invalidMessage: 'YAML parse error: ' . $e->getMessage());
+        }
+
+        return $result;
     }
 
     /**
@@ -25,6 +31,12 @@ class JsonYamlTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): array
     {
-        return Yaml::parse($value) ?? [];
+        try {
+            $result = Yaml::parse($value) ?? [];
+        } catch (\Throwable $e) {
+            throw new TransformationFailedException($e->getMessage(), previous: $e, invalidMessage: 'YAML parse error: ' . $e->getMessage());
+        }
+
+        return $result;
     }
 }
