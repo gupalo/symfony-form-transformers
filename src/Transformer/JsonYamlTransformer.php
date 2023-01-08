@@ -32,6 +32,8 @@ class JsonYamlTransformer implements DataTransformerInterface
     public function reverseTransform($value): array
     {
         try {
+            $value = str_replace("\t", '    ', $value);
+
             $result = Yaml::parse($value) ?? [];
         } catch (\Throwable $e) {
             throw new TransformationFailedException($e->getMessage(), previous: $e, invalidMessage: 'YAML parse error: ' . $e->getMessage());
