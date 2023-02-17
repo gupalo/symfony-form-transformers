@@ -2,6 +2,7 @@
 
 namespace Gupalo\SymfonyFormTransformers\Tests\Transformer;
 
+use Gupalo\SymfonyFormTransformers\Helper\TsvHelper;
 use Gupalo\SymfonyFormTransformers\Transformer\TsvTransformer;
 use PHPUnit\Framework\TestCase;
 
@@ -26,6 +27,28 @@ class TsvTransformerTest extends TestCase
 
         $s = $transformer->transform($items);
         self::assertSame($expected, $s);
+        self::assertSame($items, $transformer->reverseTransform($s));
+    }
+
+    public function testTransformMultiline(): void
+    {
+        $transformer = new TsvTransformer();
+
+        $items = [
+            ['name' => 'Paul', 'age' => '23', 'address' => '1115'."\n".'W Franklin', 'test' => 'test1'],
+            ['name' => 'Bessy the Cow', 'age' => '5', 'address' => 'Big Farm Way', 'test' => 'test2'],
+            ['name' => 'Not', 'age' => 'Full Row', 'address' => null, 'test' => null],
+        ];
+        $expected = <<<EOD
+        name~age~address~test
+        Paul~23~"1115
+        W Franklin"~test1
+        Bessy the Cow~5~Big Farm Way~test2
+        Not~Full Row~
+        EOD;
+        $s = str_replace('~', "\t", $expected);
+
+        TsvHelper::$multiline = true;
         self::assertSame($items, $transformer->reverseTransform($s));
     }
 }

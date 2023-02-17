@@ -9,7 +9,7 @@ How to Install
 Install the `gupalo/symfony-form-transformers` package using [composer](http://getcomposer.org/):
 
 ```shell
-$ composer require gupalo/symfony-form-transformers
+composer require gupalo/symfony-form-transformers
 ```
 
 Transformers
@@ -54,3 +54,5 @@ Advanced Usage
 ...
 
 See `tests` for more examples. Also look at `src` - the logic is quite simple.
+
+If you have multiline input Tsv, set `TsvHelper::$multiline = true;` 

@@ -6,6 +6,8 @@ class TsvHelper
 {
     private const SEPARATOR = "\t";
 
+    public static bool $multiline = false;
+
     public static function toArray(string $tsv): array
     {
         $tsv = self::sanitizeString($tsv);
@@ -46,6 +48,10 @@ class TsvHelper
         }
         unset($row);
 
+        if (self::$multiline) {
+            $rows = self::processMultilineRows($rows);
+        }
+
         return $rows;
     }
 
@@ -76,5 +82,47 @@ class TsvHelper
         $string = str_replace("\r", '', $string);
 
         return $string;
+    }
+
+    private static function processMultilineRows(array $rows): array
+    {
+        $result = [];
+        $unfinishedRow = null;
+        /** @var string[] $a */
+        foreach ($rows as $a) {
+            if (empty($a)) {
+                if ($unfinishedRow !== null) {
+                    $unfinishedRow[count($unfinishedRow) - 1] .= "\n";
+                }
+                continue;
+            }
+
+            if ($unfinishedRow !== null) {
+                if (str_ends_with($a[0], '"')) {
+                    $unfinishedRow[count($unfinishedRow) - 1] .= "\n".substr($a[0], 0, -1);
+                    $a = array_merge(
+                        array_values($unfinishedRow),
+                        array_values(array_slice($a, 1))
+                    );
+                    $unfinishedRow = null;
+                } else {
+                    $unfinishedRow[count($unfinishedRow) - 1] .= $a[0];
+                    continue;
+                }
+            }
+
+            if (str_starts_with($a[count($a) - 1], '"')) {
+                $a[count($a) - 1] = substr($a[count($a) - 1], 1);
+                $unfinishedRow = $a;
+                continue;
+            }
+
+            $result[] = $a;
+        }
+        if ($unfinishedRow !== null) {
+            $result[] = $unfinishedRow;
+        }
+
+        return $result;
     }
 }
