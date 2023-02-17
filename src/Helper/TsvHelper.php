@@ -32,7 +32,12 @@ class TsvHelper
         foreach ($items as $item) {
             $row = [];
             foreach ($keys as $key) {
-                $row[$key] = (string)($item[$key] ?? '');
+                $value = (string)($item[$key] ?? '');
+                if (self::$multiline && str_contains($value, "\n")) {
+                    $value = '"' . str_replace('"', '""', $value) . '"';
+                }
+
+                $row[$key] = $value;
             }
             $rows[] = implode("\t", $row);
         }
@@ -99,20 +104,20 @@ class TsvHelper
 
             if ($unfinishedRow !== null) {
                 if (str_ends_with($a[0], '"')) {
-                    $unfinishedRow[count($unfinishedRow) - 1] .= "\n".substr($a[0], 0, -1);
+                    $unfinishedRow[count($unfinishedRow) - 1] .= "\n".str_replace('""', '"', substr($a[0], 0, -1));
                     $a = array_merge(
                         array_values($unfinishedRow),
                         array_values(array_slice($a, 1))
                     );
                     $unfinishedRow = null;
                 } else {
-                    $unfinishedRow[count($unfinishedRow) - 1] .= $a[0];
+                    $unfinishedRow[count($unfinishedRow) - 1] .= str_replace('""', '"', $a[0]);
                     continue;
                 }
             }
 
             if (str_starts_with($a[count($a) - 1], '"')) {
-                $a[count($a) - 1] = substr($a[count($a) - 1], 1);
+                $a[count($a) - 1] = str_replace('""', '"', substr($a[count($a) - 1], 1));
                 $unfinishedRow = $a;
                 continue;
             }
