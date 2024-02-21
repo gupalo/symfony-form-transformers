@@ -28,4 +28,26 @@ class StringArrayTransformerTest extends TestCase
         self::assertSame($items, $array);
         self::assertSame($normalizedString, $transformer->transform($array));
     }
+
+    public function testTransformCustomOptions(): void
+    {
+        $transformer = new StringArrayTransformer(';');
+
+        $string = <<<EOD
+        uid1;uid2;
+        uid3
+
+        uid4
+
+        5;5
+        EOD;
+
+        $normalizedString = 'uid1;uid2;uid3;uid4;5;5';
+
+        $items = ['uid1', 'uid2', 'uid3', 'uid4', '5', '5'];
+
+        $array = $transformer->reverseTransform($string);
+        self::assertSame($items, $array);
+        self::assertSame($normalizedString, $transformer->transform($array));
+    }
 }

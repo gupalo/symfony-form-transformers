@@ -51,7 +51,7 @@ class YourEntityType extends AbstractType
 Advanced Usage
 --------------
 
-...
+Some transformers have options on construct. Options are public properties, you can change them later.
 
 See `tests` for more examples. Also look at `src` - the logic is quite simple.
 

@@ -7,6 +7,12 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class StringArrayTransformer implements DataTransformerInterface
 {
+    public function __construct(
+        public string $separator = ','
+    )
+    {
+    }
+
     /**
      * @param array $value
      * @return string
@@ -14,7 +20,7 @@ class StringArrayTransformer implements DataTransformerInterface
      */
     public function transform($value): string
     {
-        return implode(',', $value);
+        return implode($this->separator, $value);
     }
 
     /**
@@ -24,7 +30,7 @@ class StringArrayTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): array
     {
-        $result = explode("\n", str_replace(',', "\n", $value));
+        $result = explode("\n", str_replace($this->separator, "\n", $value));
         $result = array_values(array_filter(array_map('trim', $result), static fn(string $s) => $s !== ''));
 
         return $result;
