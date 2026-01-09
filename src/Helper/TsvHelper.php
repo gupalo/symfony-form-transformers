@@ -4,10 +4,11 @@ namespace Gupalo\SymfonyFormTransformers\Helper;
 
 class TsvHelper
 {
-    private const SEPARATOR = "\t";
+    private const string SEPARATOR = "\t";
 
-    public static bool $multiline = false;
+    public static bool $multiline = false; // be careful - it's global
 
+    /** @noinspection PhpUnnecessaryLocalVariableInspection */
     public static function toArray(string $tsv): array
     {
         $tsv = self::sanitizeString($tsv);

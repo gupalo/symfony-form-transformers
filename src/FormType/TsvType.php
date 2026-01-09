@@ -3,12 +3,13 @@
 namespace Gupalo\SymfonyFormTransformers\FormType;
 
 use Gupalo\SymfonyFormTransformers\Entity\Tsv;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TsvType
+class TsvType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -19,7 +20,7 @@ class TsvType
                 'attr' => [
                     'autofocus' => true,
                     'rows' => 20,
-                    'style' => 'font-family: Consolas, "Courier New", monospaced; font-size: 13px',
+                    'style' => 'font-family: "JetBrains Mono", "SF Mono", Menlo, Consolas, "Courier New", monospace; font-size: 13px',
                     'wrap' => 'off',
                 ],
             ])

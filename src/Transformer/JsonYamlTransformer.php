@@ -6,6 +6,9 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * @implements DataTransformerInterface<array<mixed>, string>
+ */
 class JsonYamlTransformer implements DataTransformerInterface
 {
     /**

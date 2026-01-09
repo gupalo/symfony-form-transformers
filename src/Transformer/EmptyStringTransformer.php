@@ -3,26 +3,18 @@
 namespace Gupalo\SymfonyFormTransformers\Transformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @implements DataTransformerInterface<string, string>
+ */
 class EmptyStringTransformer implements DataTransformerInterface
 {
-    /**
-     * @param string $value
-     * @return string
-     * @throws TransformationFailedException when the transformation fails
-     */
-    public function transform($value): string
+    public function transform(mixed $value): string
     {
         return $value ?? '';
     }
 
-    /**
-     * @param string $value
-     * @return string
-     * @throws TransformationFailedException when the transformation fails
-     */
-    public function reverseTransform($value): string
+    public function reverseTransform(mixed $value): string
     {
         return $value ?? '';
     }

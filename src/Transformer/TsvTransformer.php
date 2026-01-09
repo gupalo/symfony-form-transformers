@@ -4,27 +4,22 @@ namespace Gupalo\SymfonyFormTransformers\Transformer;
 
 use Gupalo\SymfonyFormTransformers\Helper\TsvHelper;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @implements DataTransformerInterface<array<array<string, mixed>>, string>
+ */
 class TsvTransformer implements DataTransformerInterface
 {
-    /**
-     * @param array $value
-     * @return string
-     * @throws TransformationFailedException when the transformation fails
-     */
-    public function transform($value): string
+    public function transform(mixed $value): string
     {
         return TsvHelper::toString($value ?? []);
     }
 
     /**
-     * @param string $value
-     * @return array
-     * @throws TransformationFailedException when the transformation fails
+     * @return array<array<string, mixed>>
      */
-    public function reverseTransform($value): array
+    public function reverseTransform(mixed $value): array
     {
-        return TsvHelper::toArray($value ?? '') ?? [];
+        return TsvHelper::toArray($value ?? '');
     }
 }

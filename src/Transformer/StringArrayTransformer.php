@@ -3,8 +3,10 @@
 namespace Gupalo\SymfonyFormTransformers\Transformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 
+/**
+ * @implements DataTransformerInterface<list<string>, string>
+ */
 class StringArrayTransformer implements DataTransformerInterface
 {
     public function __construct(
@@ -14,21 +16,17 @@ class StringArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param array $value
-     * @return string
-     * @throws TransformationFailedException when the transformation fails
+     * @param list<string> $value
      */
-    public function transform($value): string
+    public function transform(mixed $value): string
     {
         return implode($this->separator, $value);
     }
 
     /**
-     * @param string $value
-     * @return array
-     * @throws TransformationFailedException when the transformation fails
+     * @return list<string>
      */
-    public function reverseTransform($value): array
+    public function reverseTransform(mixed $value): array
     {
         $result = explode("\n", str_replace($this->separator, "\n", $value));
         $result = array_values(array_filter(array_map('trim', $result), static fn(string $s) => $s !== ''));
